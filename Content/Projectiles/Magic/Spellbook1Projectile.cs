@@ -1,4 +1,6 @@
 ﻿using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace testmod.Content.Projectiles.Magic
@@ -16,8 +18,30 @@ namespace testmod.Content.Projectiles.Magic
 
             Projectile.penetrate = 1;
             Projectile.timeLeft = 300;
+
             Projectile.tileCollide = true;
             Projectile.ignoreWater = false;
+        }
+
+        public override void OnHitNPC(
+            NPC target,
+            NPC.HitInfo hit,
+            int damageDone)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                Dust.NewDust(
+                    Projectile.position,
+                    Projectile.width,
+                    Projectile.height,
+                    DustID.PinkCrystalShard 
+                );
+            }
+
+            SoundEngine.PlaySound(
+                SoundID.Item27,
+                Projectile.Center
+            );
         }
     }
 }
