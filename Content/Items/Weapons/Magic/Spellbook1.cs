@@ -4,10 +4,12 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using testmod.Content.Projectiles.Magic;
 
-namespace testmod.Content.Items
+
+namespace testmod.Content.Items.Weapons.Magic
 {
-    public class SpellBook1 : ModItem
+    public class Spellbook1 : ModItem
     {
         public override void SetDefaults()
         {
@@ -20,10 +22,10 @@ namespace testmod.Content.Items
             
             // Use behavior
             Item.useStyle = ItemUseStyleID.Shoot;
-            //Item.UseSound = SoundID.;
+            Item.UseSound = SoundID.Item8;
             Item.autoReuse = true;
             Item.channel = false;
-            Item.useTurn = false;
+            
 
             // combat
             Item.damage = 20;
@@ -33,20 +35,19 @@ namespace testmod.Content.Items
             Item.mana = 6;
             Item.noMelee = true;
             Item.noUseGraphic = false;
-            
-            // Projectile
-            //Item.shoot = ProjectileID.;
-            Item.shootSpeed = 10f;
+            Item.useTime = 30;
+            Item.useAnimation = 30;
             
             
             // inventory
             Item.maxStack = 1;
-            Item.value = Item.sellPrice(gold: 48);
-            Item.value = Item.buyPrice(gold: 48);
+            Item.value = Item.sellPrice(gold: 4);
             Item.rare = ItemRarityID.Master;
             
             
             Item.consumable = false;
+            
+            Item.shoot = ModContent.ProjectileType<Spellbook1Projectile>();
             
         }
         
@@ -59,16 +60,42 @@ namespace testmod.Content.Items
             int damage,
             float knockback)
         {
-            return true;
-        }
-        
-        public override void OnHitNPC(
-            Player player,
-            NPC target,
-            NPC.HitInfo hit,
-            int damageDone)
-        {
-            
+            int projectileCount = Main.rand.Next(3, 6);
+            Vector2 targetPosition = Main.MouseWorld;
+            float speed = Main.rand.NextFloat(10f, 16f);
+
+            for (int i = 0; i < projectileCount; i++)
+            {
+                Vector2 spawnPosition = new Vector2(
+                    targetPosition.X + Main.rand.NextFloat(-200f, 200f),
+                    targetPosition.Y - Main.rand.NextFloat(700f, 850f)
+                );
+                
+                
+                Vector2 direction = targetPosition - spawnPosition;
+                direction.Normalize();
+                
+                Vector2 fallVelocity = direction * speed;
+
+                int projectileIndex = Projectile.NewProjectile(
+                    source,
+                    spawnPosition,
+                    fallVelocity,
+                    type,
+                    damage,
+                    knockback,
+                    player.whoAmI
+                );
+                
+                float rotationOffset = MathHelper.ToRadians(
+                    Main.rand.NextFloat(-10f, 10f)
+                );
+
+                Main.projectile[projectileIndex].rotation =
+                    fallVelocity.ToRotation() + rotationOffset;
+            }
+
+            return false;
         }
         
         
@@ -91,10 +118,7 @@ namespace testmod.Content.Items
             ));
         }
         
-        public override bool CanUseItem(Player player)
-        {
-            return player.statMana >= Item.mana;
-        }
+
             
         
 
