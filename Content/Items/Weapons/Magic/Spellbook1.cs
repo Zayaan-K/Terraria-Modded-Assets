@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -61,6 +62,15 @@ namespace testmod.Content.Items
             return true;
         }
         
+        public override void OnHitNPC(
+            Player player,
+            NPC target,
+            NPC.HitInfo hit,
+            int damageDone)
+        {
+            
+        }
+        
         
 
         public override void AddRecipes()
@@ -71,16 +81,25 @@ namespace testmod.Content.Items
                 .Register();
         }
         
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            tooltips.Add(new TooltipLine(
+                Mod,
+                "SpellbookTooltip",
+                "the tooltip"
+
+            ));
+        }
+        
         public override bool CanUseItem(Player player)
         {
             return player.statMana >= Item.mana;
         }
             
         
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
-        {
-        }
+
         
         
     }
 }
+
