@@ -22,7 +22,7 @@ namespace testmod.Content.Items.Weapons.Magic
             
             // Use behavior
             Item.useStyle = ItemUseStyleID.Shoot;
-            Item.UseSound = SoundID.Item8;
+            Item.UseSound = SoundID.Item9;
             Item.autoReuse = true;
             Item.channel = false;
             
