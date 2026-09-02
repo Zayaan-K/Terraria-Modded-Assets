@@ -1,0 +1,5 @@
+Polish att speed
+Fix Projectile sizing
+Polish Sprites
+Adjust sound effects
+Add splash dmg
