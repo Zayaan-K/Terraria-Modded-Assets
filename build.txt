@@ -1,0 +1,3 @@
+displayName = Test Modz
+author = fart
+version = 0.1
