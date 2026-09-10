@@ -5,6 +5,7 @@ My collection of custom items, weapons, projectiles, sprites, gameplay mechanics
 
 * Custom weapons and items
 * Custom projectile behavior
+* Custom Boss/NPC behavior
 * Original sprites and visual assets
 * Crafting recipes
 * Gameplay experiments
