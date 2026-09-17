@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using TestMod.Content.Projectiles;
+using testmod.Content.Players;
 
-namespace TestMod.Content.Items.Weapons
+namespace testmod.Content.Items.Weapons
 {
     public sealed class Gun1 : ModItem
     {
@@ -23,8 +22,8 @@ namespace TestMod.Content.Items.Weapons
 
             Item.noMelee = true;
 
-            Item.useTime = 3;
-            Item.useAnimation = 3;
+            Item.useTime = 20;
+            Item.useAnimation = 20;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.useTurn = false;
 
@@ -41,19 +40,12 @@ namespace TestMod.Content.Items.Weapons
             Item.rare = ItemRarityID.Master;
         }
 
-        public override bool Shoot(
-            Player player,
-            EntitySource_ItemUse_WithAmmo source,
-            Vector2 position,
-            Vector2 velocity,
-            int type,
-            int damage,
-            float knockback)
+        public override float UseSpeedMultiplier(Player player)
         {
-            // Returning true lets Terraria spawn the normal bullet.
-            return true;
+            Gun1Player gunPlayer = player.GetModPlayer<Gun1Player>();
+            return 1f + gunPlayer.HitStreak * 0.10f;
         }
-        
+
         public override void ModifyShootStats(
             Player player,
             ref Vector2 position,
@@ -66,7 +58,7 @@ namespace TestMod.Content.Items.Weapons
             {
                 type = ProjectileID.BulletHighVelocity;
             }
-        }        
+        }
 
         public override void AddRecipes()
         {
@@ -82,12 +74,9 @@ namespace TestMod.Content.Items.Weapons
             tooltips.Add(new TooltipLine(
                 Mod,
                 "Gun1Tooltip",
-                "The tooltip"
+                "Converts Musket Balls into High Velocity Bullets\n" +
+                "Consecutive hits increase firing speed"
             ));
         }
-        
-        
-        
     }
 }
-

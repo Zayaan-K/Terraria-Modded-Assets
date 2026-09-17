@@ -1,30 +1,34 @@
 using Terraria.ModLoader;
 
-namespace testmod.Common.Players
+namespace TestMod.Content.Players
 {
-    public class gun1player : ModPlayer
+    public sealed class Gun1Player : ModPlayer
     {
-        public int ConsecutiveHits;
-        public int HitResetTimer;
+        public const int MaxHitStreak = 5;
+
+        public int HitStreak { get; private set; }
 
         public void RegisterHit()
         {
-            ConsecutiveHits++;
-            HitResetTimer = 60;
+            if (HitStreak < MaxHitStreak)
+            {
+                HitStreak++;
+            }
         }
 
         public void RegisterMiss()
         {
-            ConsecutiveHits = 0;
-            HitResetTimer = 0;
+            HitStreak = 0;
         }
 
-        public override void PostUpdate()
+        public override void Initialize()
         {
-            if (HitResetTimer > 0)
-                HitResetTimer--;
-            else
-                ConsecutiveHits = 0;
+            HitStreak = 0;
+        }
+
+        public override void UpdateDead()
+        {
+            HitStreak = 0;
         }
     }
 }

@@ -3,9 +3,9 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using TestMod.Content.Projectiles;
+using testmod.Content.Projectiles;
 
-namespace TestMod.Content.Items.Weapons
+namespace testmod.Content.Items.Weapons
 {
     public sealed class TestSword : ModItem
     {
