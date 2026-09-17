@@ -4,8 +4,8 @@ My collection of custom items, weapons, projectiles, sprites, gameplay mechanics
 ## Current Content
 
 * Custom weapons and items
-* Magic spellbooks
 * Custom projectile behavior
+* Custom Boss/NPC behavior
 * Original sprites and visual assets
 * Crafting recipes
 * Gameplay experiments
