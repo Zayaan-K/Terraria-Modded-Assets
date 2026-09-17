@@ -9,6 +9,10 @@ namespace testmod.Content.Items.Weapons.Ranged
 {
     public sealed class gun1 : ModItem
     {
+        private const int BaseUseTime = 30;
+        private const float SpeedIncreasePerHit = 0.10f;
+        private const float MaximumSpeedMultiplier = 10f;
+
         public override void SetDefaults()
         {
             Item.width = 32;
@@ -22,13 +26,13 @@ namespace testmod.Content.Items.Weapons.Ranged
 
             Item.noMelee = true;
 
-            Item.useTime = 20;
-            Item.useAnimation = 20;
+            Item.useTime = BaseUseTime;
+            Item.useAnimation = BaseUseTime;
+            Item.autoReuse = true;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.useTurn = false;
 
             Item.UseSound = SoundID.Item11;
-            Item.autoReuse = true;
             Item.channel = false;
 
             Item.shoot = ProjectileID.Bullet;
@@ -42,8 +46,17 @@ namespace testmod.Content.Items.Weapons.Ranged
 
         public override float UseSpeedMultiplier(Player player)
         {
-            gun1player gunPlayer = player.GetModPlayer<gun1player>();
-            return 1f + gunPlayer.HitStreak * 0.10f;
+            gun1player gunPlayer =
+                player.GetModPlayer<gun1player>();
+
+            float speedMultiplier =
+                1f + gunPlayer.HitStreak * SpeedIncreasePerHit;
+
+            return MathHelper.Clamp(
+                speedMultiplier,
+                1f,
+                MaximumSpeedMultiplier
+            );
         }
 
         public override void ModifyShootStats(
@@ -54,15 +67,22 @@ namespace testmod.Content.Items.Weapons.Ranged
             ref int damage,
             ref float knockback)
         {
-            gun1player gunPlayer = player.GetModPlayer<gun1player>();
+            gun1player gunPlayer =
+                player.GetModPlayer<gun1player>();
 
-            float spreadDegrees = gunPlayer.HitStreak * 0.5f;
-            float spreadRadians = MathHelper.ToRadians(spreadDegrees);
-            
+            float spreadDegrees =
+                gunPlayer.HitStreak * 0.5f;
+
+            float spreadRadians =
+                MathHelper.ToRadians(spreadDegrees);
+
             velocity = velocity.RotatedBy(
-                Main.rand.NextFloat(-spreadRadians, spreadRadians)
+                Main.rand.NextFloat(
+                    -spreadRadians,
+                    spreadRadians
+                )
             );
-            
+
             if (type == ProjectileID.Bullet)
             {
                 type = ProjectileID.BulletHighVelocity;
@@ -77,14 +97,25 @@ namespace testmod.Content.Items.Weapons.Ranged
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
-
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        
+        public override bool CanConsumeAmmo(Item ammo, Player player)
         {
+            return !Main.rand.NextBool(4);
+        }
+
+        public override void ModifyTooltips(
+            List<TooltipLine> tooltips)
+        {
+            gun1player gunPlayer =
+                Main.LocalPlayer.GetModPlayer<gun1player>();
+
             tooltips.Add(new TooltipLine(
                 Mod,
                 "Gun1Tooltip",
+                "25% chance to not consume ammo\n" +
                 "Converts Musket Balls into High Velocity Bullets\n" +
-                "Consecutive hits increase firing speed"
+                "Consecutive hits increase firing speed\n" +
+                $"Current hit streak: {gunPlayer.HitStreak}"
             ));
         }
     }

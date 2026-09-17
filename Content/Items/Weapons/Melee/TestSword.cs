@@ -9,9 +9,6 @@ namespace TestMod.Content.Items.Weapons.Melee
 {
     public sealed class TestSword : ModItem
     {
-        public override string Texture =>
-            "TestMod/Content/Items/Weapons/Melee/TestSword";
-
         public override void SetDefaults()
         {
             Item.width = 32;
