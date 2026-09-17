@@ -1,11 +1,11 @@
 using Terraria;
 using Terraria.ModLoader;
-using TestMod.Content.Items.Weapons;
-using TestMod.Content.Players;
+using testmod.Common.Players;
+using testmod.Content.Items.Weapons.Ranged;
 
-namespace TestMod.Content.Projectiles
+namespace testmod.Content.Projectiles.Ranged
 {
-    public sealed class Gun1GlobalProjectile : GlobalProjectile
+    public sealed class gun1GlobalProjectile : GlobalProjectile
     {
         // A separate copy is required for every projectile.
         public override bool InstancePerEntity => true;
@@ -18,7 +18,7 @@ namespace TestMod.Content.Projectiles
             Terraria.DataStructures.IEntitySource source)
         {
             if (source is Terraria.DataStructures.EntitySource_ItemUse_WithAmmo itemSource &&
-                itemSource.Item.ModItem is Gun1)
+                itemSource.Item.ModItem is gun1)
             {
                 firedFromGun1 = true;
             }
@@ -38,7 +38,7 @@ namespace TestMod.Content.Projectiles
             hitEnemy = true;
 
             Player owner = Main.player[projectile.owner];
-            owner.GetModPlayer<Gun1Player>().RegisterHit();
+            owner.GetModPlayer<gun1player>().RegisterHit();
         }
 
         public override void OnKill(Projectile projectile, int timeLeft)
@@ -49,7 +49,7 @@ namespace TestMod.Content.Projectiles
             }
 
             Player owner = Main.player[projectile.owner];
-            owner.GetModPlayer<Gun1Player>().RegisterMiss();
+            owner.GetModPlayer<gun1player>().RegisterMiss();
         }
     }
 }

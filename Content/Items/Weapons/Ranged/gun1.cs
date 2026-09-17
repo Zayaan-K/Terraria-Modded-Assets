@@ -3,11 +3,11 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using testmod.Content.Players;
+using testmod.Common.Players;
 
-namespace testmod.Content.Items.Weapons
+namespace testmod.Content.Items.Weapons.Ranged
 {
-    public sealed class Gun1 : ModItem
+    public sealed class gun1 : ModItem
     {
         public override void SetDefaults()
         {
@@ -42,7 +42,7 @@ namespace testmod.Content.Items.Weapons
 
         public override float UseSpeedMultiplier(Player player)
         {
-            Gun1Player gunPlayer = player.GetModPlayer<Gun1Player>();
+            gun1player gunPlayer = player.GetModPlayer<gun1player>();
             return 1f + gunPlayer.HitStreak * 0.10f;
         }
 
@@ -54,6 +54,15 @@ namespace testmod.Content.Items.Weapons
             ref int damage,
             ref float knockback)
         {
+            gun1player gunPlayer = player.GetModPlayer<gun1player>();
+
+            float spreadDegrees = gunPlayer.HitStreak * 0.5f;
+            float spreadRadians = MathHelper.ToRadians(spreadDegrees);
+            
+            velocity = velocity.RotatedBy(
+                Main.rand.NextFloat(-spreadRadians, spreadRadians)
+            );
+            
             if (type == ProjectileID.Bullet)
             {
                 type = ProjectileID.BulletHighVelocity;

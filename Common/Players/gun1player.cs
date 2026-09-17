@@ -1,8 +1,8 @@
 using Terraria.ModLoader;
 
-namespace TestMod.Content.Players
+namespace testmod.Common.Players
 {
-    public sealed class Gun1Player : ModPlayer
+    public sealed class gun1player : ModPlayer
     {
         public const int MaxHitStreak = 5;
 
