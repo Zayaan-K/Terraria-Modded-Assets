@@ -1,0 +1,25 @@
+Mods: {
+	TestMod: {
+		Projectiles: {
+			TestSwordProjectile.DisplayName: Test Sword Projectile
+			Spellbook1Projectile.DisplayName: Spellbook1 Projectile
+		}
+
+		Items: {
+			gun1: {
+				Tooltip: ""
+				DisplayName: gun1
+			}
+
+			TestSword: {
+				Tooltip: ""
+				DisplayName: Test Sword
+			}
+
+			Spellbook1: {
+				Tooltip: ""
+				DisplayName: Spellbook1
+			}
+		}
+	}
+}

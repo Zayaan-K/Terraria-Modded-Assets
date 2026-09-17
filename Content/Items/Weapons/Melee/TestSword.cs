@@ -3,12 +3,15 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using testmod.Content.Projectiles;
+using TestMod.Content.Projectiles.Melee;
 
-namespace testmod.Content.Items.Weapons
+namespace TestMod.Content.Items.Weapons.Melee
 {
     public sealed class TestSword : ModItem
     {
+        public override string Texture =>
+            "TestMod/Content/Items/Weapons/Melee/TestSword";
+
         public override void SetDefaults()
         {
             Item.width = 32;
@@ -96,4 +99,3 @@ namespace testmod.Content.Items.Weapons
         }
     }
 }
-

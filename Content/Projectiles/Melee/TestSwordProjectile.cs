@@ -2,12 +2,12 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace TestMod.Content.Projectiles
+namespace TestMod.Content.Projectiles.Melee
 {
     public sealed class TestSwordProjectile : ModProjectile
     {
         public override string Texture =>
-            "TestMod/Content/Items/Weapons/TestSword";
+            "TestMod/Content/Items/Weapons/Melee/TestSword";
 
         // Values synchronized by Terraria.
         private ref float State => ref Projectile.ai[0];
