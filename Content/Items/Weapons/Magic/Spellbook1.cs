@@ -34,7 +34,6 @@ namespace testmod.Content.Items.Weapons.Magic
             Item.DamageType = DamageClass.Magic;
             Item.mana = 6;
             Item.noMelee = true;
-            Item.noUseGraphic = false;
             Item.useTime = 30;
             Item.useAnimation = 30;
             
