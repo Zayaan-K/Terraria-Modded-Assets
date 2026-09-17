@@ -10,8 +10,8 @@ namespace testmod.Content.Items.Weapons.Ranged
     public sealed class gun1 : ModItem
     {
         private const int BaseUseTime = 30;
-        private const float SpeedIncreasePerHit = 0.10f;
-        private const float MaximumSpeedMultiplier = 10f;
+        private const float MaximumSpeedMultiplier = 25f;
+        private const int HitsToMaximumSpeed = 20;
 
         public override void SetDefaults()
         {
@@ -19,8 +19,8 @@ namespace testmod.Content.Items.Weapons.Ranged
             Item.height = 32;
             Item.scale = 1f;
 
-            Item.damage = 20;
-            Item.crit = 4;
+            Item.damage = 57;
+            Item.crit = 24;
             Item.knockBack = 0.75f;
             Item.DamageType = DamageClass.Ranged;
 
@@ -49,13 +49,20 @@ namespace testmod.Content.Items.Weapons.Ranged
             gun1player gunPlayer =
                 player.GetModPlayer<gun1player>();
 
-            float speedMultiplier =
-                1f + gunPlayer.HitStreak * SpeedIncreasePerHit;
+            float progress = MathHelper.Clamp(
+                gunPlayer.HitStreak / (float)HitsToMaximumSpeed,
+                0f,
+                1f
+            );
 
-            return MathHelper.Clamp(
-                speedMultiplier,
+            // Between linear (1) and quadratic (2).
+            float curvedProgress =
+                System.MathF.Pow(progress, 1.5f);
+
+            return MathHelper.Lerp(
                 1f,
-                MaximumSpeedMultiplier
+                MaximumSpeedMultiplier,
+                curvedProgress
             );
         }
 
@@ -89,6 +96,14 @@ namespace testmod.Content.Items.Weapons.Ranged
             }
         }
 
+        public override bool CanConsumeAmmo(
+            Item ammo,
+            Player player)
+        {
+            // 25% chance to preserve ammunition.
+            return !Main.rand.NextBool(4);
+        }
+
         public override void AddRecipes()
         {
             CreateRecipe()
@@ -96,11 +111,6 @@ namespace testmod.Content.Items.Weapons.Ranged
                 .AddIngredient(ItemID.ChlorophyteBar, 18)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
-        }
-        
-        public override bool CanConsumeAmmo(Item ammo, Player player)
-        {
-            return !Main.rand.NextBool(4);
         }
 
         public override void ModifyTooltips(
@@ -114,8 +124,7 @@ namespace testmod.Content.Items.Weapons.Ranged
                 "Gun1Tooltip",
                 "25% chance to not consume ammo\n" +
                 "Converts Musket Balls into High Velocity Bullets\n" +
-                "Consecutive hits increase firing speed\n" +
-                $"Current hit streak: {gunPlayer.HitStreak}"
+                "Consecutive hits increase firing speed\n"
             ));
         }
     }
