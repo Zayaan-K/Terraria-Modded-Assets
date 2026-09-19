@@ -28,14 +28,14 @@ namespace testmod.Content.Items.Weapons.Magic
             
 
             // combat
-            Item.damage = 20;
-            Item.crit = 4;
+            Item.damage = 700;
+            Item.crit = 14;
             Item.knockBack = 0f;
             Item.DamageType = DamageClass.Magic;
-            Item.mana = 6;
+            Item.mana = 4;
             Item.noMelee = true;
-            Item.useTime = 30;
-            Item.useAnimation = 30;
+            Item.useTime = 8;
+            Item.useAnimation = 8 ;
             
             
             // inventory
@@ -61,7 +61,7 @@ namespace testmod.Content.Items.Weapons.Magic
         {
             int projectileCount = Main.rand.Next(3, 6);
             Vector2 targetPosition = Main.MouseWorld;
-            float speed = Main.rand.NextFloat(10f, 16f);
+            float speed = Main.rand.NextFloat(28f, 34f);
 
             for (int i = 0; i < projectileCount; i++)
             {
