@@ -73,24 +73,24 @@ namespace testmod.Content.Items.Weapons.Ranged
             ref int damage,
             ref float knockback)
         {
-            gun1player gunPlayer =  player.GetModPlayer<gun1player>();
+            gun1player gunPlayer = player.GetModPlayer<gun1player>();
 
-            float spreadDegrees = gunPlayer.HitStreak * 0.75f;
-
+            float spreadDegrees = gunPlayer.HitStreak * 0.45f;
             float spreadRadians = MathHelper.ToRadians(spreadDegrees);
 
             velocity = velocity.RotatedBy(
-                Main.rand.NextFloat(
-                    -spreadRadians,
-                    spreadRadians
-                )
+                Main.rand.NextFloat(-spreadRadians, spreadRadians)
             );
-
+            
             if (type == ProjectileID.Bullet)
             {
                 type = ProjectileID.BulletHighVelocity;
             }
             
+            if (type == ProjectileID.ChlorophyteBullet)
+            {
+                damage = (int)(damage * 0.60f);
+            }
         }
 
         public override bool CanConsumeAmmo(
