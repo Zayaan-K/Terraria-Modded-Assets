@@ -10,8 +10,8 @@ namespace testmod.Content.Items.Weapons.Ranged
     public sealed class gun1 : ModItem
     {
         private const int BaseUseTime = 30;
-        private const float MaximumSpeedMultiplier = 25f;
-        private const int HitsToMaximumSpeed = 20;
+        private const float MaximumSpeedMultiplier = 40f;
+        private const int HitsToMaximumSpeed = 30;
 
         public override void SetDefaults()
         {
@@ -19,7 +19,7 @@ namespace testmod.Content.Items.Weapons.Ranged
             Item.height = 32;
             Item.scale = 1f;
 
-            Item.damage = 57;
+            Item.damage = 77;
             Item.crit = 24;
             Item.knockBack = 0.75f;
             Item.DamageType = DamageClass.Ranged;
@@ -54,8 +54,7 @@ namespace testmod.Content.Items.Weapons.Ranged
                 0f,
                 1f
             );
-
-            // Between linear (1) and quadratic (2).
+            
             float curvedProgress =
                 System.MathF.Pow(progress, 1.5f);
 
@@ -74,14 +73,11 @@ namespace testmod.Content.Items.Weapons.Ranged
             ref int damage,
             ref float knockback)
         {
-            gun1player gunPlayer =
-                player.GetModPlayer<gun1player>();
+            gun1player gunPlayer =  player.GetModPlayer<gun1player>();
 
-            float spreadDegrees =
-                gunPlayer.HitStreak * 0.5f;
+            float spreadDegrees = gunPlayer.HitStreak * 0.75f;
 
-            float spreadRadians =
-                MathHelper.ToRadians(spreadDegrees);
+            float spreadRadians = MathHelper.ToRadians(spreadDegrees);
 
             velocity = velocity.RotatedBy(
                 Main.rand.NextFloat(
@@ -94,6 +90,7 @@ namespace testmod.Content.Items.Weapons.Ranged
             {
                 type = ProjectileID.BulletHighVelocity;
             }
+            
         }
 
         public override bool CanConsumeAmmo(
@@ -124,7 +121,8 @@ namespace testmod.Content.Items.Weapons.Ranged
                 "Gun1Tooltip",
                 "25% chance to not consume ammo\n" +
                 "Converts Musket Balls into High Velocity Bullets\n" +
-                "Consecutive hits increase firing speed\n"
+                "Consecutive hits increase firing speed\n" +
+                "Reduced damage with chlorophyte bullets" 
             ));
         }
     }
