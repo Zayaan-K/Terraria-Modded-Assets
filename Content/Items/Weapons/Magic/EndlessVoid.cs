@@ -46,7 +46,7 @@ namespace testmod.Content.Items.Weapons.Magic
             Item.consumable = false;
             
             Item.shoot = ModContent.ProjectileType<EndlessVoidProjectile>();
-            Item.shootSpeed = 12f;
+            Item.shootSpeed = 8f;
             
         }
         

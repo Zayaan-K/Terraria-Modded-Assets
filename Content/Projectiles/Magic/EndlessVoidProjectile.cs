@@ -48,7 +48,7 @@ namespace testmod.Content.Projectiles.Magic
                         toTarget.ToRotation() - Projectile.velocity.ToRotation());
 
 
-                    Projectile.velocity = Projectile.velocity.RotatedBy(angle * 0.1f);
+                    Projectile.velocity = Projectile.velocity.RotatedBy(angle * 0.225f);
                 }
             }
             
