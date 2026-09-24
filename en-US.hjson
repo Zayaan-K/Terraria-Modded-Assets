@@ -3,6 +3,7 @@ Mods: {
 		Projectiles: {
 			TestSwordProjectile.DisplayName: Test Sword Projectile
 			Spellbook1Projectile.DisplayName: Spellbook1 Projectile
+			EndlessVoidProjectile.DisplayName: Endless Void Projectile
 		}
 
 		Items: {
@@ -19,6 +20,11 @@ Mods: {
 			Spellbook1: {
 				Tooltip: ""
 				DisplayName: Spellbook1
+			}
+
+			EndlessVoid: {
+				DisplayName: Endless Void
+				Tooltip: ""
 			}
 		}
 	}

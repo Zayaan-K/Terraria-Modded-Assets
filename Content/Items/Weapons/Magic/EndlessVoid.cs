@@ -46,6 +46,7 @@ namespace testmod.Content.Items.Weapons.Magic
             Item.consumable = false;
             
             Item.shoot = ModContent.ProjectileType<EndlessVoidProjectile>();
+            Item.shootSpeed = 12f;
             
         }
         
@@ -58,13 +59,22 @@ namespace testmod.Content.Items.Weapons.Magic
             int damage,
             float knockback)
         {
-            int projectileCount = Main.rand.Next(3, 6);
-            Vector2 targetPosition = Main.MouseWorld;
-            float speed = Main.rand.NextFloat(10f, 16f);
+            int projectileCount = Main.rand.Next(5,8);
+            const float spread = 0.18f; 
 
             for (int i = 0; i < projectileCount; i++)
             {
-                
+                float angle = (i - (projectileCount - 1) / 2f) * spread;
+                Vector2 shotVelocity = velocity.RotatedBy(angle);
+
+                Projectile.NewProjectile(
+                    source,
+                    position,
+                    shotVelocity,
+                    type,
+                    damage,
+                    knockback,
+                    player.whoAmI);
             }
 
             return false;
