@@ -6,28 +6,25 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using testmod.Content.Projectiles.Magic;
 
-
 namespace testmod.Content.Items.Weapons.Magic
 {
     public class EndlessVoid : ModItem
     {
         public override void SetDefaults()
         {
-            
             // Sprite & box
             Item.width = 40;
             Item.height = 54;
             Item.scale = 1f;
             Item.useTurn = true;
-            
+
             // Use behavior
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.UseSound = SoundID.Item84;
             Item.autoReuse = true;
             Item.channel = false;
-            
 
-            // combat
+            // Combat
             Item.damage = 360;
             Item.crit = 19;
             Item.knockBack = 0.5f;
@@ -36,20 +33,17 @@ namespace testmod.Content.Items.Weapons.Magic
             Item.noMelee = true;
             Item.useTime = 15;
             Item.useAnimation = 15;
-            
-            
-            // inventory
+
+            // Inventory
             Item.maxStack = 1;
             Item.value = Item.sellPrice(gold: 44);
             Item.rare = ItemRarityID.Master;
-            
             Item.consumable = false;
-            
+
             Item.shoot = ModContent.ProjectileType<EndlessVoidProjectile>();
             Item.shootSpeed = 8f;
-            
         }
-        
+
         public override bool Shoot(
             Player player,
             EntitySource_ItemUse_WithAmmo source,
@@ -59,17 +53,30 @@ namespace testmod.Content.Items.Weapons.Magic
             int damage,
             float knockback)
         {
-            int projectileCount = Main.rand.Next(5,8);
-            const float spread = 0.18f; 
+            int projectileCount = Main.rand.Next(4, 7); // 4, 5, or 6
+
+            if (velocity.LengthSquared() == 0f)
+                return false;
+
+            Vector2 forward = Vector2.Normalize(velocity);
+            Vector2 sideways = new Vector2(-forward.Y, forward.X);
 
             for (int i = 0; i < projectileCount; i++)
             {
-                float angle = (i - (projectileCount - 1) / 2f) * spread;
+                float angle = Main.rand.NextFloat(-0.35f, 0.35f);
                 Vector2 shotVelocity = velocity.RotatedBy(angle);
+
+                float forwardOffset = Main.rand.NextFloat(0f, 55f);
+                float sidewaysOffset = Main.rand.NextFloat(-35f, 35f);
+
+                Vector2 shotPosition =
+                    position +
+                    forward * forwardOffset +
+                    sideways * sidewaysOffset;
 
                 Projectile.NewProjectile(
                     source,
-                    position,
+                    shotPosition,
                     shotVelocity,
                     type,
                     damage,
@@ -79,8 +86,6 @@ namespace testmod.Content.Items.Weapons.Magic
 
             return false;
         }
-        
-        
 
         public override void AddRecipes()
         {
@@ -89,23 +94,13 @@ namespace testmod.Content.Items.Weapons.Magic
                 .AddTile(TileID.WorkBenches)
                 .Register();
         }
-        
+
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             tooltips.Add(new TooltipLine(
                 Mod,
                 "placeholder",
-                "placeholding"
-
-            ));
+                "placeholding"));
         }
-        
-
-            
-        
-
-        
-        
     }
 }
-

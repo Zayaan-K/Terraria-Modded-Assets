@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
@@ -7,55 +6,66 @@ namespace testmod.Content.Projectiles.Magic
 {
     public class EndlessVoidProjectile : ModProjectile
     {
+        private const int HomingDelay = 64; 
+
         public override void SetDefaults()
         {
             Projectile.width = 60;
             Projectile.height = 60;
             Projectile.friendly = true;
             Projectile.DamageType = DamageClass.Magic;
-            Projectile.penetrate = 3;
+            Projectile.penetrate = 11;
             Projectile.timeLeft = 600;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.extraUpdates = 2;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 27;
         }
 
         public override void AI()
         {
-
-            int targetIndex = (int)Projectile.ai[0] - 1;
-
-            if (targetIndex < 0 ||
-                targetIndex >= Main.maxNPCs ||
-                !Main.npc[targetIndex].CanBeChasedBy(Projectile))
-            {
-                targetIndex = FindTarget();
-
-                float storedTarget = targetIndex + 1f;
-                if (Projectile.ai[0] != storedTarget)
-                {
-                    Projectile.ai[0] = storedTarget;
-                    Projectile.netUpdate = true;
-                }
-            }
-
-            if (targetIndex >= 0 && Projectile.velocity.LengthSquared() > 0f)
-            {
-                Vector2 toTarget = Main.npc[targetIndex].Center - Projectile.Center;
-                if (toTarget.LengthSquared() > 0f)
-                {
-                    float angle = MathHelper.WrapAngle(
-                        toTarget.ToRotation() - Projectile.velocity.ToRotation());
-
-
-                    Projectile.velocity = Projectile.velocity.RotatedBy(angle * 0.225f);
-                }
-            }
+            Projectile.localAI[1]++;
             
-            if (Projectile.velocity.LengthSquared() > 0f)
-                Projectile.velocity += Vector2.Normalize(Projectile.velocity) * 0.0025f;
+            if (Projectile.localAI[1] >= HomingDelay)
+            {
+                int targetIndex = (int)Projectile.ai[0] - 1;
 
-            Projectile.rotation += (Projectile.velocity.X + Projectile.velocity.Y) * 0.1f;
+                if (targetIndex < 0 ||
+                    targetIndex >= Main.maxNPCs ||
+                    !Main.npc[targetIndex].CanBeChasedBy(Projectile))
+                {
+                    targetIndex = FindTarget();
+
+                    float storedTarget = targetIndex + 1f;
+                    if (Projectile.ai[0] != storedTarget)
+                    {
+                        Projectile.ai[0] = storedTarget;
+                        Projectile.netUpdate = true;
+                    }
+                }
+
+                if (targetIndex >= 0 && Projectile.velocity.LengthSquared() > 0f)
+                {
+                    Vector2 toTarget = Main.npc[targetIndex].Center - Projectile.Center;
+
+                    if (toTarget.LengthSquared() > 0f)
+                    {
+                        float angle = MathHelper.WrapAngle(
+                            toTarget.ToRotation() - Projectile.velocity.ToRotation());
+
+                        Projectile.velocity =
+                            Projectile.velocity.RotatedBy(angle * 0.175f);
+                    }
+                }
+            }
+
+            if (Projectile.velocity.LengthSquared() > 0f)
+                Projectile.velocity +=
+                    Vector2.Normalize(Projectile.velocity) * 0.0025f;
+
+            Projectile.rotation +=
+                (Projectile.velocity.X + Projectile.velocity.Y) * 0.1f;
         }
 
         private int FindTarget()
